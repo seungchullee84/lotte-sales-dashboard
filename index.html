@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="동탄점의 일자별 매출과 작년·올해 날씨를 한 화면에서 비교합니다.">
+  <title>동탄점 매출 분석기</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="top-inner">
+    <div class="identity"><span class="mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 19h16M7 15v-4m5 4V7m5 8V4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><strong>동탄점 매출 분석기</strong></div>
+    <a class="top-link" href="#import">매출 가져오기</a>
+  </div></header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div><h1 id="page-title">매출 흐름</h1><p id="store-label">동탄점 지오다노의 판매 실적을 기간별로 비교해요.</p></div>
+      <span class="data-range" id="data-range">매출 자료 확인 중</span>
+    </section>
+    <form class="filters panel" id="filters" aria-label="조회 조건">
+      <div class="date-fields">
+        <label>시작일<input type="date" id="start" required></label>
+        <label>종료일<input type="date" id="end" required></label>
+      </div>
+      <label class="channel-field">매출 채널<select id="channel"><option value="all">전체 채널</option><option value="department">백화점</option><option value="online">온라인</option><option value="mobile">모바일</option></select></label>
+      <div class="filter-buttons"><button class="primary" type="submit">조회</button><button type="button" id="last-seven">최근 7일</button><button type="button" id="all-days">전체 기간</button></div>
+      <p class="filter-status" id="filter-status" role="status" hidden></p>
+    </form>
+    <section class="stats" aria-label="기간 매출 요약">
+      <div class="stat panel stat-main"><span>총매출</span><strong id="gross"></strong><small id="current-period">선택한 기간</small></div>
+      <div class="stat panel"><span>판매수량</span><strong id="quantity"></strong><small>기간 합계</small></div>
+      <div class="stat panel"><span>전년 대비 총매출</span><strong id="change"></strong><small id="prior-label">포털 전년실적 기준</small></div>
+    </section>
+    <section class="charts" aria-label="매출 그래프">
+      <article class="panel chart-panel">
+        <div class="panel-top">
+          <div><h2 id="trend-title">누적 매출 추이</h2><p id="trend-note">날짜별로 합산한 매출을 비교해요.</p></div>
+          <label class="metric-label">지표<select id="metric"><option value="gross">총매출</option><option value="quantity">판매수량</option></select></label>
+        </div>
+        <div id="trend" class="trend" aria-label="일자별 매출 추이"></div>
+        <div id="legend" class="legend"><span><i class="key current"></i><span id="current-legend">올해 누적</span></span><span id="prior-key"><i class="key prior"></i><span id="prior-legend">전년 누적</span></span></div>
+      </article>
+      <article class="panel chart-panel channels">
+        <div class="panel-top"><div><h2>채널별 실적</h2><p>같은 기간 전체 채널 비교</p></div></div>
+        <div id="channel-chart" class="channel-chart"></div>
+      </article>
+    </section>
+    <section class="panel table-panel planning" aria-labelledby="planning-title">
+      <div class="panel-top">
+        <div><h2 id="planning-title">7일 예보와 상품 준비</h2><p>동탄점 예보에 맞춰 의류 후보와 최근 검색 흐름을 확인해요.</p></div>
+        <button type="button" id="refresh-plan">새로고침</button>
+      </div>
+      <p class="table-status" id="forecast-status" role="status">일주일 예보를 확인하는 중이에요.</p>
+      <div id="forecast-days" class="forecast-days" aria-label="동탄점 일주일 예보"></div>
+      <p class="source-line"><a id="forecast-source" href="https://www.weather.go.kr/" target="_blank" rel="noopener">기상청 날씨누리</a></p>
+      <div class="suggestions" aria-labelledby="suggestions-title">
+        <h3 id="suggestions-title">준비할 상품 후보</h3>
+        <p id="trend-status" class="table-status" role="status">네이버 데이터랩에서 검색 흐름을 확인하는 중이에요.</p>
+        <ul class="prep-list" id="prep-list"></ul>
+        <p class="source-line">검색 지수는 전국 네이버 검색 관심도예요. <a id="datalab-source" href="https://datalab.naver.com/keyword/trendSearch.naver" target="_blank" rel="noopener">네이버 데이터랩</a></p>
+      </div>
+    </section>
+    <section class="panel table-panel" aria-labelledby="weather-title">
+      <div class="panel-top"><div><h2 id="weather-title">올해·작년 날씨 비교</h2><p>동탄 인근 수원 관측소의 같은 달·날짜를 비교해요.</p></div></div>
+      <p id="weather-status" class="table-status" role="status">선택 기간의 날씨를 확인하는 중이에요.</p>
+      <div class="table-scroll" tabindex="0" aria-label="날씨 비교 표">
+        <table><thead><tr><th scope="col">올해 일자</th><th scope="col">올해 날씨</th><th scope="col">작년 일자</th><th scope="col">작년 날씨</th></tr></thead><tbody id="weather-rows"></tbody></table>
+      </div>
+      <p class="source-line"><a id="weather-source" href="https://www.weather.go.kr/" target="_blank" rel="noopener">기상청 날씨누리</a></p>
+    </section>
+    <details class="panel details" id="daily">
+      <summary>일자별 매출 수치</summary>
+      <div class="table-scroll" tabindex="0" aria-label="일자별 매출 표"><table>
+        <thead><tr><th scope="col">일자</th><th scope="col">판매수량</th><th scope="col">총매출</th><th scope="col">전년실적</th></tr></thead>
+        <tbody id="daily-rows"></tbody>
+      </table></div>
+    </details>
+    <details class="panel details" id="import">
+      <summary>포털에서 매출 가져오기</summary>
+      <div class="import-body">
+        <p>파트너포털에서 <strong>납품/매출관리 → 판매정보 → 일자별 매출</strong>을 열고 월을 조회해 주세요.</p>
+        <p>아래 링크를 Chrome 북마크바에 끌어 놓으세요. 포털의 일자별 매출 화면에서 그 북마크를 누른 뒤, 복사된 자료를 이곳에 붙여넣으면 돼요.</p>
+        <a id="reader-link" class="bookmark" draggable="true" aria-describedby="reader-guide">롯데 매출 표 복사</a>
+        <p id="reader-guide" class="subtle">이 북마크는 포털에 이미 표시된 표를 복사해요.</p>
+        <form id="import-form">
+          <label for="import-text">복사한 매출 자료</label>
+          <textarea id="import-text" rows="4" placeholder="포털에서 복사한 자료를 붙여넣으세요." required></textarea>
+          <button class="primary" id="import-button" type="submit">가져오기</button>
+          <p id="import-status" role="status"></p>
+        </form>
+      </div>
+    </details>
+    <footer>매출 출처 <a href="https://together.lotteshopping.com/EMDV3/index.html" target="_blank" rel="noopener">롯데백화점 파트너포털</a><span>일자별 매출 기준</span></footer>
+    <noscript>매출 그래프를 보려면 브라우저에서 JavaScript를 켜 주세요.</noscript>
+  </main>
+</body>
+</html>

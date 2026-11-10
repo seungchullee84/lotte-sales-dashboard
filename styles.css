@@ -1,0 +1,142 @@
+/* Hallmark · v2.0.0 · shape: app screen · theme: custom restrained teal · genre: modern-minimal · posture: restrained · data: verified local report */
+/* Critique: one accent traces the main series; aligned values and the weather table keep comparisons readable. */
+:root {
+  --paper: #fcfdfc;
+  --page: #eef3f1;
+  --tint: #e5f4ee;
+  --ink: #172923;
+  --muted: #50645c;
+  --rule: #cdd9d4;
+  --accent: #08634f;
+  --accent-deep: #064d3f;
+  --series-old: #768e84;
+  --series-mid: #448977;
+  --series-light: #91b4a9;
+  --focus: #20765c;
+  --error: #922a31;
+  --weather-sun: #956014;
+  --weather-wet: #215e92;
+  --weather-fog: #536a78;
+  --radius: 12px;
+  --font: "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+body { font-family: var(--font); color: var(--ink); background: var(--page); font-size: 16px; line-height: 1.55; font-variant-numeric: tabular-nums; }
+h1, h2 { margin: 0; min-width: 0; overflow-wrap: break-word; text-wrap: balance; line-height: 1.2; }
+h1 { font-size: clamp(32px, 4vw, 48px); letter-spacing: -.045em; }
+h2 { font-size: 20px; letter-spacing: -.02em; }
+p { margin: 0; }
+a { color: var(--accent-deep); text-underline-offset: .2em; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button, select, input, textarea { border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); }
+button, select, input { min-height: 42px; }
+button { padding: 8px 12px; font-weight: 650; cursor: pointer; }
+button:hover, .bookmark:hover { background: var(--tint); }
+button:disabled { background: var(--page); color: var(--muted); border-color: var(--rule); cursor: wait; }
+button:active:not(:disabled) { transform: translateY(1px); }
+.primary { color: var(--paper); background: var(--accent); border-color: var(--accent); }
+.primary:hover { background: var(--accent-deep); }
+label { display: grid; gap: 4px; color: var(--muted); font-size: 13px; font-weight: 650; min-width: 0; }
+input, select, textarea { width: 100%; padding: 8px 12px; }
+.topbar { background: var(--paper); border-bottom: 1px solid var(--rule); }
+.top-inner, .shell { width: min(100% - 40px, 1264px); margin-inline: auto; }
+.top-inner { min-height: 60px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.identity { display: flex; align-items: center; gap: 8px; }
+.mark { width: 32px; height: 32px; display: grid; place-items: center; background: var(--tint); color: var(--accent); border-radius: 8px; }
+.top-link { font-weight: 650; font-size: 14px; white-space: nowrap; }
+.shell { padding: 28px 0 32px; display: grid; gap: 16px; }
+.intro { display: flex; justify-content: space-between; gap: 12px; align-items: end; }
+.intro p { margin-top: 8px; color: var(--muted); }
+.data-range { font-size: 13px; color: var(--muted); text-align: right; }
+.panel { min-width: 0; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); }
+.filters { padding: 12px 16px; display: flex; align-items: end; flex-wrap: wrap; gap: 12px; }
+.date-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.channel-field { min-width: 104px; }
+.filter-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-status { width: 100%; font-size: 14px; color: var(--muted); }
+.error { color: var(--error); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.stat { display: grid; gap: 4px; padding: 16px; }
+.stat-main { background: var(--tint); }
+.stat span, .stat small { color: var(--muted); font-size: 13px; }
+.stat strong { font-size: clamp(18px, 2.35vw, 32px); letter-spacing: -.035em; line-height: 1.25; overflow-wrap: anywhere; }
+.charts { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; }
+.chart-panel, .table-panel { padding: 16px; }
+.panel-top { display: flex; justify-content: space-between; align-items: start; gap: 8px; }
+.panel-top p { margin-top: 4px; color: var(--muted); font-size: 14px; }
+.metric-label { width: 112px; }
+.trend { margin-top: 8px; min-height: 116px; }
+.trend svg { display: block; width: 100%; height: auto; }
+.trend text { fill: var(--muted); font-family: var(--font); }
+.chart-grid { stroke: var(--rule); stroke-width: 1; }
+.chart-current, .chart-prior { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.chart-current { stroke: var(--accent); }
+.chart-prior { stroke: var(--series-old); stroke-dasharray: 5 4; }
+.chart-point { fill: var(--accent); stroke: var(--paper); stroke-width: 1; }
+.chart-point-prior { fill: var(--series-old); }
+.legend { display: flex; gap: 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 4px; }
+.legend span[hidden] { display: none; }
+.key { width: 20px; border-top: 2px solid var(--accent); }
+.key.prior { border-color: var(--series-old); border-top-style: dashed; }
+.channel-chart { display: grid; gap: 16px; margin-top: 24px; }
+.bar-label { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; font-size: 14px; }
+.bar-label strong { overflow-wrap: anywhere; }
+.bar { display: block; width: 100%; height: 12px; margin-top: 4px; }
+.bar-track { fill: var(--page); }
+.bar-zero { stroke: var(--series-old); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.bar-fill.department { fill: var(--series-mid); }
+.bar-fill.online { fill: var(--accent); }
+.bar-fill.mobile { fill: var(--series-light); }
+.table-status, .source-line, footer { color: var(--muted); font-size: 14px; }
+.table-status, .source-line { margin-top: 12px; }
+.forecast-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.forecast-day { min-width: 0; display: grid; align-content: start; gap: 4px; padding: 12px; background: var(--page); border-radius: 8px; font-size: 14px; }
+.forecast-day small, .forecast-condition { color: var(--muted); }
+.weather-icon { display: inline-block; width: 22px; height: 22px; color: var(--weather-fog); flex: none; }
+.weather-sun, .weather-thunder { color: var(--weather-sun); }
+.weather-rain, .weather-snow, .weather-mix { color: var(--weather-wet); }
+.forecast-day .weather-icon { width: 28px; height: 28px; }
+.weather-reading { display: flex; gap: 6px; align-items: center; }
+.suggestions { border-top: 1px solid var(--rule); padding-top: 12px; margin-top: 16px; }
+.suggestions h3 { font-size: 17px; margin: 0; }
+.prep-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; padding: 0; margin: 8px 0 0; list-style: none; }
+.prep-item { border-bottom: 1px solid var(--rule); padding: 8px 0; }
+.prep-item p { font-size: 14px; color: var(--muted); margin: 4px 0; }
+.trend-signal { color: var(--accent-deep); font-weight: 650; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 8px 12px; border-bottom: 1px solid var(--rule); font-size: 14px; white-space: nowrap; }
+th { color: var(--muted); background: var(--page); }
+td small { display: block; color: var(--muted); }
+.details { padding: 12px 16px; }
+summary { cursor: pointer; font-weight: 700; }
+.import-body { display: grid; gap: 8px; padding-top: 12px; }
+.subtle { color: var(--muted); font-size: 14px; }
+.bookmark { justify-self: start; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 8px; font-weight: 650; }
+#import-form { display: grid; gap: 8px; justify-items: start; }
+#import-status { font-size: 14px; }
+footer { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.empty { color: var(--muted); padding-block: 20px; font-size: 14px; }
+@media (max-width: 900px) {
+  .charts { grid-template-columns: minmax(0, 1fr); }
+  .forecast-days { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .top-inner, .shell { width: calc(100% - 24px); }
+  .shell { padding-top: 16px; gap: 12px; }
+  .intro { align-items: start; flex-direction: column; }
+  .data-range { text-align: left; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .stat-main { grid-column: 1 / -1; }
+  .stat, .chart-panel, .table-panel { padding: 12px; }
+  .filters { padding: 12px; gap: 8px; }
+  .date-fields { width: 100%; }
+  .channel-field { min-width: 0; flex: 1 1 100px; }
+  .filter-buttons { gap: 4px; }
+  .filter-buttons button { font-size: 14px; padding-inline: 8px; }
+  .forecast-days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prep-list { grid-template-columns: minmax(0, 1fr); }
+}

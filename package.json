@@ -1,0 +1,1 @@
+{"name":"lotte-sales-dashboard","private":true,"type":"module","scripts":{"start":"node server.mjs","test":"node --test sales-model.test.mjs portal-reader.test.mjs"}}
